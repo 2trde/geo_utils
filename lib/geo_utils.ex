@@ -18,7 +18,7 @@ defmodule GeoUtils do
   def distance(v1, v2) when is_nil(v1) or is_nil(v2), do: nil
 
   def distance(zip1, zip2) when is_binary(zip1) and is_binary(zip2) do
-    distance(zip_to_coordinate(zip1), zip_to_coordinate(zip2))
+    distance(zip_to_coordinate(String.trim(zip1)), zip_to_coordinate(String.trim(zip2)))
   end
 
   def distance(%{lat: _, lon: _} = pos1, %{lat: _, lon: _} = pos2) when is_map(pos1) and is_map(pos2) do
