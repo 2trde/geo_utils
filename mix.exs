@@ -21,7 +21,7 @@ defmodule GeoUtils.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:poison, "~> 3.0"},
+      {:poison, "~> 4.0"},
     ]
   end
 end
