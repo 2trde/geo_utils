@@ -4,12 +4,27 @@ defmodule GeoUtils do
   """
 
 
+
+  def get_csv_path() do
+    [
+      "deps/geo_utils/data/zip_codes_de.csv",
+      "data/zip_codes_de.csv"
+    ]
+    |> Enum.reduce(fn (path, acc) ->
+      if File.exists?(path) do
+        path
+      else
+        acc
+      end
+    end)
+  end
+
   def zip_to_coordinate(<< _ :: utf8, _ :: utf8, _ :: utf8, _ :: utf8, _ :: utf8 >> = zip) do
     zip_to_coordinate("DE-" <> zip)
   end
 
   def zip_to_coordinate(zip) do
-    File.stream!("data/zip_codes_de.csv", [:read], :line)
+    File.stream!(get_csv_path(), [:read], :line)
     |> Stream.map(fn
       line ->
         if String.starts_with?(line, zip) do
@@ -30,10 +45,6 @@ defmodule GeoUtils do
       [coord] -> coord
       [] -> nil
     end
-  end
-
-  def zip_to_coordinate(_) do
-    nil
   end
 
   def distance(v1, v2) when is_nil(v1) or is_nil(v2), do: nil
