@@ -3,12 +3,33 @@ defmodule GeoUtils do
   Helper to map plz to geocoordinates and calculate distances
   """
 
-  require GeoUtils.Helper
-  GeoUtils.Helper.gen_zip_to_coordinate("data/zip_codes_de.json", "DE", true)
-  GeoUtils.Helper.gen_zip_to_coordinate("data/zip_codes_dk.json", "DK")
 
   def zip_to_coordinate(<< _ :: utf8, _ :: utf8, _ :: utf8, _ :: utf8, _ :: utf8 >> = zip) do
     zip_to_coordinate("DE-" <> zip)
+  end
+
+  def zip_to_coordinate(zip) do
+    File.stream!("data/zip_codes_de.csv", [:read], :line)
+    |> Stream.map(fn
+      line ->
+        if String.starts_with?(line, zip) do
+          line
+          |> String.trim()
+          |> String.split(";")
+          |> case do
+            [_zip, lat, lon] ->
+              %{lat: lat|>String.to_float, lon: lon|>String.to_float}
+          end
+        else
+          nil
+        end
+    end)
+    |> Stream.filter(& &1)
+    |> Enum.into([])
+    |> case do
+      [coord] -> coord
+      [] -> nil
+    end
   end
 
   def zip_to_coordinate(_) do
