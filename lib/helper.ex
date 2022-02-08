@@ -7,14 +7,17 @@ defmodule GeoUtils.Helper do
           [s] -> String.to_float(s)
           _ -> String.to_integer(s)
         end
-      n when is_number(n) -> n
+
+      n when is_number(n) ->
+        n
     end
 
-    produce_code = fn(zip, lat, lon, acc) ->
+    produce_code = fn zip, lat, lon, acc ->
       lat = to_float.(lat)
       lon = to_float.(lon)
 
       zip = prefix <> "-" <> zip
+
       if default do
         quote do
           unquote(acc)
@@ -33,6 +36,7 @@ defmodule GeoUtils.Helper do
     |> Enum.reduce(nil, fn
       {zip, %{"lat" => lat, "lon" => lon}}, acc ->
         produce_code.(zip, lat, lon, acc)
+
       %{"nr" => zip, "visueltcenter" => [lon, lat]}, acc ->
         produce_code.(zip, lat, lon, acc)
     end)
