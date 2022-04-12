@@ -14,4 +14,8 @@ defmodule GeoUtilsTest do
   test "DE-89077" do
     assert zip_to_coordinate("DE-89077") == %{lat: 48.4, lon: 10.0}
   end
+
+  test "nil" do
+    assert zip_to_coordinate(nil) == nil
+  end
 end
