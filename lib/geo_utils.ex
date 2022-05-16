@@ -31,7 +31,7 @@ defmodule GeoUtils do
     |> Stream.filter(& &1)
     |> Enum.into([])
     |> case do
-      [coord] -> coord
+      [coord | _] -> coord
       [] -> nil
     end
   end
