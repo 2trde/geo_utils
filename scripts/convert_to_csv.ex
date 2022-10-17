@@ -10,5 +10,3 @@ list =
   end)
 
 File.write("data/zip_codes_de.csv", list|> Enum.join("\n"))
-
-  

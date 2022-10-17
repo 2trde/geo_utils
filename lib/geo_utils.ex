@@ -7,16 +7,18 @@ defmodule GeoUtils do
     zip_to_coordinate("DE-" <> zip)
   end
 
-
   def zip_to_coordinate(zip) when is_binary(zip) do
     Regex.run(~r/(DE|AT|NL)-(\d+)/, zip)
     |> case do
       [_, country, zip] ->
         zip_to_coordinate(country, zip)
+
       _ ->
         nil
     end
   end
+
+  def zip_to_coordinate(_), do: nil
 
   def zip_to_coordinate(country, zip) when country in ["DE", "AT", "NL"] do
     File.stream!(get_csv_path(country), [:read], :line)
@@ -36,8 +38,6 @@ defmodule GeoUtils do
     end
   end
 
-  def zip_to_coordinate(_), do: nil
-
   def distance(v1, v2) when is_nil(v1) or is_nil(v2), do: nil
 
   def distance(zip1, zip2) when is_binary(zip1) and is_binary(zip2) do
@@ -52,6 +52,7 @@ defmodule GeoUtils do
 
   defp get_csv_path(country) do
     country = String.downcase(country)
+
     ["deps/geo_utils/data/zip_codes_#{country}.csv", "data/zip_codes_#{country}.csv"]
     |> Enum.reduce(fn path, acc ->
       if File.exists?(path) do
