@@ -20,7 +20,7 @@ defmodule GeoUtils do
 
   def zip_to_coordinate(_), do: nil
 
-  def zip_to_coordinate(country, zip) when country in ["DE", "AT", "NL"] do
+  def zip_to_coordinate(country, zip) do
     File.stream!(get_csv_path(country), [:read], :line)
     |> Stream.map(fn line ->
       if String.starts_with?(line, "#{country}-#{zip}") do

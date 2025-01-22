@@ -1,6 +1,6 @@
 # GeoUtils
 
-**TODO: Add description**
+source of raw data: https://github.com/zauberware/postal-codes-json-xml-csv
 
 ## Installation
 
