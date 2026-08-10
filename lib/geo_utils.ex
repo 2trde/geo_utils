@@ -8,7 +8,7 @@ defmodule GeoUtils do
   end
 
   def zip_to_coordinate(zip) when is_binary(zip) do
-    Regex.run(~r/(DE|AT|NL)-(\d+)/, zip)
+    Regex.run(~r/([A-Z]{2,2})-(\d+)/, zip)
     |> case do
       [_, country, zip] ->
         zip_to_coordinate(country, zip)
@@ -21,20 +21,23 @@ defmodule GeoUtils do
   def zip_to_coordinate(_), do: nil
 
   def zip_to_coordinate(country, zip) do
-    File.stream!(get_csv_path(country), [:read], :line)
-    |> Stream.map(fn line ->
-      if String.starts_with?(line, "#{country}-#{zip}") do
-        [_zip, lat, lon] = String.trim(line) |> String.split(";")
-        %{lat: to_float(lat), lon: to_float(lon)}
-      else
-        nil
+    csv_path = get_csv_path(country)
+    if File.exists?(csv_path) do
+      File.stream!(csv_path, [:read], :line)
+      |> Stream.map(fn line ->
+        if String.starts_with?(line, "#{country}-#{zip}") do
+          [_zip, lat, lon] = String.trim(line) |> String.split(";")
+          %{lat: to_float(lat), lon: to_float(lon)}
+        else
+          nil
+        end
+      end)
+      |> Stream.filter(& &1)
+      |> Enum.into([])
+      |> case do
+        [coord | _] -> coord
+        [] -> nil
       end
-    end)
-    |> Stream.filter(& &1)
-    |> Enum.into([])
-    |> case do
-      [coord | _] -> coord
-      [] -> nil
     end
   end
 
