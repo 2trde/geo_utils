@@ -25,8 +25,8 @@ defmodule GeoUtils do
     if File.exists?(csv_path) do
       File.stream!(csv_path, [:read], :line)
       |> Stream.map(fn line ->
-        if String.starts_with?(line, "#{country}-#{zip}") do
-          [_zip, lat, lon] = String.trim(line) |> String.split(";")
+        [line_zip, lat, lon] = String.trim(line) |> String.split(";")
+        if line_zip == "#{country}-#{zip}" do
           %{lat: to_float(lat), lon: to_float(lon)}
         else
           nil

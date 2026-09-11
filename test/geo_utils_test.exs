@@ -8,11 +8,11 @@ defmodule GeoUtilsTest do
   end
 
   test "DE-82294" do
-    assert zip_to_coordinate("DE-82294") == %{lat: 48.2333333, lon: 11.1666667}
+    assert zip_to_coordinate("DE-82294") == %{lat: 48.2382, lon: 11.1557}
   end
 
   test "DE-89077" do
-    assert zip_to_coordinate("DE-89077") == %{lat: 48.4, lon: 10.0}
+    assert zip_to_coordinate("DE-89077") == %{lat: 48.3981, lon: 9.97}
   end
 
   test "nil" do
