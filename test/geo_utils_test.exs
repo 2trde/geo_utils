@@ -18,4 +18,9 @@ defmodule GeoUtilsTest do
   test "nil" do
     assert zip_to_coordinate(nil) == nil
   end
+
+
+  test "prepare_zip" do
+    assert prepare_zip("7773NK", "NL") == "7773"
+  end
 end

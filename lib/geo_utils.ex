@@ -21,6 +21,7 @@ defmodule GeoUtils do
   def zip_to_coordinate(_), do: nil
 
   def zip_to_coordinate(country, zip) do
+    zip = prepare_zip(zip, country)
     csv_path = get_csv_path(country)
     if File.exists?(csv_path) do
       File.stream!(csv_path, [:read], :line)
@@ -40,6 +41,23 @@ defmodule GeoUtils do
       end
     end
   end
+
+  def prepare_zip(zip, "NL") do
+    Regex.run(~r/(\d{4})/, zip)
+    |> case do
+      [_, zip] -> zip
+      _ -> zip
+    end
+  end
+  def prepare_zip(zip, "DE") do
+    Regex.run(~r/(\d{5})/, zip)
+    |> case do
+      [_, zip] -> zip
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, _), do: zip
 
   def distance(v1, v2) when is_nil(v1) or is_nil(v2), do: nil
 
