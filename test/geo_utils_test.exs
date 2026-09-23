@@ -22,5 +22,29 @@ defmodule GeoUtilsTest do
 
   test "prepare_zip" do
     assert prepare_zip("7773NK", "NL") == "7773"
+    assert prepare_zip("92-308A", "PL") == "92-308"
+    assert prepare_zip("906 14", "SK") == "906 14"
+    assert prepare_zip("90614", "SK") == "906 14"
+    assert prepare_zip("4585-531", "PT") == "4585-531"
+    assert prepare_zip("4585531", "PT") == "4585-531"
+    assert prepare_zip("4585 531", "PT") == "4585-531"
+    assert prepare_zip("747 81", "CZ") == "747 81"
+    assert prepare_zip("74781", "CZ") == "747 81"
+    assert prepare_zip("747-81", "CZ") == "747 81"
+    assert prepare_zip("LV-4626", "LV") == "LV-4626"
+    assert prepare_zip("LV 4626", "LV") == "LV-4626"
+    assert prepare_zip("4626", "LV") == "LV-4626"
+    assert prepare_zip("8938AD", "NL") == "8938"
+    assert prepare_zip("8938AD", "NL") == "8938"
+    assert prepare_zip("575 36", "SE") == "575 36"
+    assert prepare_zip("575-36", "SE") == "575 36"
+    assert prepare_zip("57536", "SE") == "575 36"
+    assert prepare_zip("A-4863", "AT") == "4863"
+    assert prepare_zip("L-4991", "LU") == "L-4991"
+    assert prepare_zip("LU-4991", "LU") == "L-4991"
+    assert prepare_zip("4991", "LU") == "L-4991"
+
+
   end
+
 end

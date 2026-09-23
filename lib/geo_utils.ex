@@ -42,17 +42,85 @@ defmodule GeoUtils do
     end
   end
 
-  def prepare_zip(zip, "NL") do
+  # 4 digits zips
+  def prepare_zip(zip, country) when country in ["NL", "DK", "SI", "NO", "BG", "AT", "BE"] do
     Regex.run(~r/(\d{4})/, zip)
     |> case do
       [_, zip] -> zip
       _ -> zip
     end
   end
-  def prepare_zip(zip, "DE") do
+
+  # 5 digits zips
+  def prepare_zip(zip, country) when country in ["DE", "ES", "LT", "FR", "IT", "HR", "EE", "FI"] do
     Regex.run(~r/(\d{5})/, zip)
     |> case do
       [_, zip] -> zip
+      _ -> zip
+    end
+  end
+
+  # 6 digits zips
+  def prepare_zip(zip, country) when country in ["RO"] do
+    Regex.run(~r/(\d{6})/, zip)
+    |> case do
+      [_, zip] -> zip
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "PL") do
+    Regex.run(~r/(\d{2}\-\d{3})/, zip)
+    |> case do
+      [_, zip] -> zip
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "LV") do
+    Regex.run(~r/(\d{4})/, zip |> String.replace(~r/[^0-9]/, ""))
+    |> case do
+      [_, zip] -> "LV-#{zip}"
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "LU") do
+    Regex.run(~r/(\d{4})/, zip |> String.replace(~r/[^0-9]/, ""))
+    |> case do
+      [_, zip] -> "L-#{zip}"
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "SK") do
+    Regex.run(~r/(\d{3})(\d{2})/, zip |> String.replace(~r/[^0-9]/, ""))
+    |> case do
+      [_, a, b] -> "#{a} #{b}"
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "SE") do
+    Regex.run(~r/(\d{3})(\d{2})/, zip |> String.replace(~r/[^0-9]/, ""))
+    |> case do
+      [_, a, b] -> "#{a} #{b}"
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "PT") do
+    Regex.run(~r/(\d{4})(\d{3})/, zip |> String.replace(~r/[^0-9]/, ""))
+    |> case do
+      [_, a, b] -> "#{a}-#{b}"
+      _ -> zip
+    end
+  end
+
+  def prepare_zip(zip, "CZ") do
+    Regex.run(~r/(\d{3})(\d{2})/, zip |> String.replace(~r/[^0-9]/, ""))
+    |> case do
+      [_, a, b] -> "#{a} #{b}"
       _ -> zip
     end
   end
