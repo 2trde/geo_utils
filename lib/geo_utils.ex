@@ -27,6 +27,10 @@ defmodule GeoUtils do
       File.stream!(csv_path, [:read], :line)
       |> Stream.map(fn line ->
         [line_zip, lat, lon] = String.trim(line) |> String.split(";")
+
+        # in france we have the CEDEX entries, nasty. Maybe later we can do it only for FR
+        line_zip = line_zip |> String.replace(~r/ CEDEX.*/, "")
+
         if line_zip == "#{country}-#{zip}" do
           %{lat: to_float(lat), lon: to_float(lon)}
         else

@@ -15,6 +15,10 @@ defmodule GeoUtilsTest do
     assert zip_to_coordinate("DE-89077") == %{lat: 48.3981, lon: 9.97}
   end
 
+  test "FR-89077" do
+    assert zip_to_coordinate("FR-92752") == %{lat: 48.892, lon: 2.2067}
+  end
+
   test "nil" do
     assert zip_to_coordinate(nil) == nil
   end
@@ -43,8 +47,6 @@ defmodule GeoUtilsTest do
     assert prepare_zip("L-4991", "LU") == "L-4991"
     assert prepare_zip("LU-4991", "LU") == "L-4991"
     assert prepare_zip("4991", "LU") == "L-4991"
-
-
   end
 
 end
